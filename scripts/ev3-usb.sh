@@ -190,7 +190,7 @@ down)
     ev3_usb_down
     ;;
 *)
-    echo "Usage: ev3-usb.sh up|down <udc_device>"
+    echo "Usage: ev3-usb.sh [[up|down [udc_device]]"
     exit 1
     ;;
 esac
