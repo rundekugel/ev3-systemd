@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/bash
 
 # USB Gadget for LEGO MINDSTORMS EV3 hardware
 #
@@ -17,11 +17,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+# 2020 changes by rundekugel @github:
+# more easy to use with default params
+
 set -e
 
 # command line parameters
 command="$1" # "up" or "down"
-udc_device="$2" # a udc device name, such as "musb-hdrc.1.auto"
+if [ "$2" == "" ]
+then
+ udc_device=$(ls /sys/class/udc)
+else
+ udc_device="$2" # a udc device name, such as "musb-hdrc.1.auto"
+fi
+echo udc: $udc_device
+
+if [ "$command" == "" ]; then
+ command=up
+fi
 
 g="/sys/kernel/config/usb_gadget/ev3dev"
 
