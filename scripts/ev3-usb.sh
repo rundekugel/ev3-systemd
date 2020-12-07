@@ -70,13 +70,14 @@ ev3_usb_up() {
     ms_compat_id="RNDIS" # matches Windows RNDIS Drivers
     ms_subcompat_id="5162001" # matches Windows RNDIS 6.0 Driver
 
-
-    tmpdir=$(mktemp -d)
-    mount /dev/mmcblk0p1 $tmpdir
-    if [ -f $tmpdir/ev3dev.txt ]; then
-        cdc_only=$(grep -i "^cdc_only=\(true\|yes\|1\)" $tmpdir/ev3dev.txt | cut -b 10-)
+    if [ -e /dev/mmcblk0p1 ] ; then  #this makes it useable for systems without mmcblk0p1
+      tmpdir=$(mktemp -d)
+      mount /dev/mmcblk0p1 $tmpdir
+      if [ -f $tmpdir/ev3dev.txt ]; then
+         cdc_only=$(grep -i "^cdc_only=\(true\|yes\|1\)" $tmpdir/ev3dev.txt | cut -b 10-)
+      fi
+      umount $tmpdir
     fi
-    umount $tmpdir
 
     if [ -d ${g} ]; then
         if [ "$(cat ${g}/UDC)" != "" ]; then
